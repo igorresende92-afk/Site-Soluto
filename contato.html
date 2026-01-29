@@ -8,6 +8,7 @@
         content="Entre em contato com a Soluto Tecnologia. Fale com nossos especialistas em desenvolvimento de software e IA.">
     <title>Contato | Soluto Tecnologia</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="canonical" href="https://soluto.tech/contato.html">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -21,13 +22,16 @@
 </head>
 
 <body>
-    <header class="header" id="header">
+    <!-- Skip Link (Accessibility) -->
+    <a href="#main-content" class="skip-link">Pular para o conteúdo principal</a>
+
+    <header class="header" id="header" role="banner">
         <div class="container">
             <div class="header-inner">
                 <a href="index.html" class="logo">
                     <div class="logo-icon">S</div><span>Soluto</span>
                 </a>
-                <nav class="nav" id="nav">
+                <nav class="nav" id="nav" role="navigation">
                     <ul class="nav-list">
                         <li><a href="servicos.html" class="nav-link">Serviços</a></li>
                         <li><a href="cases.html" class="nav-link">Cases</a></li>
@@ -36,174 +40,192 @@
                     </ul>
                     <a href="contato.html" class="btn btn-primary">Fale com um Especialista</a>
                 </nav>
-                <button class="mobile-toggle" id="mobile-toggle"
-                    aria-label="Menu"><span></span><span></span><span></span></button>
+                <button class="mobile-toggle" id="mobile-toggle" aria-label="Abrir menu de navegação"
+                    aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button>
             </div>
         </div>
     </header>
 
-    <section class="page-header">
-        <div class="hero-glow hero-glow-1"></div>
-        <div class="container">
-            <div class="page-header-content">
-                <nav class="breadcrumb"><a href="index.html">Home</a><span class="breadcrumb-separator">›</span><span
-                        class="breadcrumb-current">Contato</span></nav>
-                <h1 class="page-title reveal">Fale <span class="text-gradient">Conosco</span></h1>
-                <p class="page-subtitle reveal">Estamos prontos para ajudar a transformar seu negócio. Entre em contato!
-                </p>
+    <main id="main-content">
+
+        <section class="page-header">
+            <div class="hero-glow hero-glow-1"></div>
+            <div class="container">
+                <div class="page-header-content">
+                    <nav class="breadcrumb"><a href="index.html">Home</a><span
+                            class="breadcrumb-separator">›</span><span class="breadcrumb-current">Contato</span></nav>
+                    <h1 class="page-title reveal">Fale <span class="text-gradient">Conosco</span></h1>
+                    <p class="page-subtitle reveal">Estamos prontos para ajudar a transformar seu negócio. Entre em
+                        contato!
+                    </p>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section class="section">
-        <div class="container">
-            <div class="contact-grid">
-                <!-- Contact Info -->
-                <div class="reveal-left">
-                    <h2 style="margin-bottom: var(--space-6);">Vamos <span class="text-gradient">Conversar</span>?</h2>
-                    <p style="color: var(--color-gray-light); margin-bottom: var(--space-8);">Preencha o formulário ou
-                        utilize um dos nossos canais de atendimento. Respondemos em até 24 horas úteis.</p>
+        <section class="section">
+            <div class="container">
+                <div class="contact-grid">
+                    <!-- Contact Info -->
+                    <div class="reveal-left">
+                        <h2 style="margin-bottom: var(--space-6);">Vamos <span class="text-gradient">Conversar</span>?
+                        </h2>
+                        <p style="color: var(--color-gray-light); margin-bottom: var(--space-8);">Preencha o formulário
+                            ou
+                            utilize um dos nossos canais de atendimento. Respondemos em até 24 horas úteis.</p>
 
-                    <div class="contact-info-list">
-                        <div class="contact-info-item">
-                            <div class="contact-info-icon">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2">
-                                    <path
-                                        d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-                                </svg>
+                        <div class="contact-info-list">
+                            <div class="contact-info-item">
+                                <div class="contact-info-icon">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path
+                                            d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                                    </svg>
+                                </div>
+                                <div class="contact-info-content">
+                                    <h4>Telefone</h4>
+                                    <p>+55 (11) 99999-9999</p>
+                                </div>
                             </div>
-                            <div class="contact-info-content">
-                                <h4>Telefone</h4>
-                                <p>+55 (11) 99999-9999</p>
+
+                            <div class="contact-info-item">
+                                <div class="contact-info-icon">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path
+                                            d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                                        <polyline points="22,6 12,13 2,6" />
+                                    </svg>
+                                </div>
+                                <div class="contact-info-content">
+                                    <h4>E-mail</h4>
+                                    <p>contato@soluto.tech</p>
+                                </div>
+                            </div>
+
+                            <div class="contact-info-item">
+                                <div class="contact-info-icon">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                                        <circle cx="12" cy="10" r="3" />
+                                    </svg>
+                                </div>
+                                <div class="contact-info-content">
+                                    <h4>Localização</h4>
+                                    <p>São Paulo, SP - Brasil</p>
+                                </div>
+                            </div>
+
+                            <div class="contact-info-item">
+                                <div class="contact-info-icon">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <circle cx="12" cy="12" r="10" />
+                                        <polyline points="12 6 12 12 16 14" />
+                                    </svg>
+                                </div>
+                                <div class="contact-info-content">
+                                    <h4>Horário</h4>
+                                    <p>Seg - Sex: 9h às 18h</p>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="contact-info-item">
-                            <div class="contact-info-icon">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2">
-                                    <path
-                                        d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-                                    <polyline points="22,6 12,13 2,6" />
-                                </svg>
-                            </div>
-                            <div class="contact-info-content">
-                                <h4>E-mail</h4>
-                                <p>contato@soluto.tech</p>
-                            </div>
-                        </div>
-
-                        <div class="contact-info-item">
-                            <div class="contact-info-icon">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2">
-                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                                    <circle cx="12" cy="10" r="3" />
-                                </svg>
-                            </div>
-                            <div class="contact-info-content">
-                                <h4>Localização</h4>
-                                <p>São Paulo, SP - Brasil</p>
-                            </div>
-                        </div>
-
-                        <div class="contact-info-item">
-                            <div class="contact-info-icon">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2">
-                                    <circle cx="12" cy="12" r="10" />
-                                    <polyline points="12 6 12 12 16 14" />
-                                </svg>
-                            </div>
-                            <div class="contact-info-content">
-                                <h4>Horário</h4>
-                                <p>Seg - Sex: 9h às 18h</p>
+                        <div style="margin-top: var(--space-8);">
+                            <h4 style="margin-bottom: var(--space-4);">Redes Sociais</h4>
+                            <div class="footer-social">
+                                <a href="https://linkedin.com/company/soluto-tecnologia" target="_blank"
+                                    rel="noopener noreferrer" aria-label="LinkedIn"><svg width="18" height="18"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path
+                                            d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                                        <rect x="2" y="9" width="4" height="12" />
+                                        <circle cx="4" cy="4" r="2" />
+                                    </svg></a>
+                                <a href="https://github.com/soluto-tecnologia" target="_blank" rel="noopener noreferrer"
+                                    aria-label="GitHub"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2">
+                                        <path
+                                            d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+                                    </svg></a>
+                                <a href="https://instagram.com/solutotecnologia" target="_blank"
+                                    rel="noopener noreferrer" aria-label="Instagram"><svg width="18" height="18"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                                    </svg></a>
                             </div>
                         </div>
                     </div>
 
-                    <div style="margin-top: var(--space-8);">
-                        <h4 style="margin-bottom: var(--space-4);">Redes Sociais</h4>
-                        <div class="footer-social">
-                            <a href="https://linkedin.com/company/soluto-tecnologia" target="_blank"
-                                rel="noopener noreferrer" aria-label="LinkedIn"><svg width="18" height="18"
-                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path
-                                        d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-                                    <rect x="2" y="9" width="4" height="12" />
-                                    <circle cx="4" cy="4" r="2" />
-                                </svg></a>
-                            <a href="https://github.com/soluto-tecnologia" target="_blank" rel="noopener noreferrer"
-                                aria-label="GitHub"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="2">
-                                    <path
-                                        d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
-                                </svg></a>
-                            <a href="https://instagram.com/solutotecnologia" target="_blank" rel="noopener noreferrer"
-                                aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="2">
-                                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-                                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-                                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-                                </svg></a>
-                        </div>
+                    <!-- Contact Form -->
+                    <div class="contact-form-card reveal-right">
+                        <h3 style="margin-bottom: var(--space-6);">Envie sua Mensagem</h3>
+                        <form id="contact-form" action="https://api.web3forms.com/submit" method="POST">
+                            <!-- Web3Forms Config (hidden) -->
+                            <!-- IMPORTANTE: Substitua YOUR_ACCESS_KEY_HERE pela sua access key do web3forms.com -->
+                            <input type="hidden" name="access_key" id="web3forms-key" value="YOUR_ACCESS_KEY_HERE">
+                            <input type="hidden" name="subject" value="Nova mensagem do site Soluto">
+                            <input type="hidden" name="from_name" value="Site Soluto - Formulário de Contato">
+                            <input type="hidden" name="redirect" value="https://soluto.tech/contato.html?success=true">
+                            <!-- Honeypot anti-spam (hidden) -->
+                            <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+
+                            <div class="form-group">
+                                <label for="name" class="form-label">Nome Completo *</label>
+                                <input type="text" id="name" name="name" class="form-input" placeholder="Seu nome"
+                                    required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email" class="form-label">E-mail *</label>
+                                <input type="email" id="email" name="email" class="form-input"
+                                    placeholder="seu@email.com" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone" class="form-label">Telefone</label>
+                                <input type="tel" id="phone" name="phone" class="form-input"
+                                    placeholder="(11) 99999-9999">
+                            </div>
+                            <div class="form-group">
+                                <label for="company" class="form-label">Empresa</label>
+                                <input type="text" id="company" name="company" class="form-input"
+                                    placeholder="Nome da empresa">
+                            </div>
+                            <div class="form-group">
+                                <label for="subject" class="form-label">Assunto *</label>
+                                <select id="subject" name="subject" class="form-input" required>
+                                    <option value="">Selecione um assunto</option>
+                                    <option value="desenvolvimento">Desenvolvimento de Software</option>
+                                    <option value="ia">Soluções de IA</option>
+                                    <option value="consultoria">Consultoria Técnica</option>
+                                    <option value="squads">Alocação de Squads</option>
+                                    <option value="outro">Outro</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="message" class="form-label">Mensagem *</label>
+                                <textarea id="message" name="message" class="form-textarea"
+                                    placeholder="Conte-nos sobre seu projeto..." required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-lg" style="width: 100%;">
+                                Enviar Mensagem
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <line x1="22" y1="2" x2="11" y2="13" />
+                                    <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                                </svg>
+                            </button>
+                        </form>
                     </div>
                 </div>
-
-                <!-- Contact Form -->
-                <div class="contact-form-card reveal-right">
-                    <h3 style="margin-bottom: var(--space-6);">Envie sua Mensagem</h3>
-                    <form id="contact-form">
-                        <div class="form-group">
-                            <label for="name" class="form-label">Nome Completo *</label>
-                            <input type="text" id="name" name="name" class="form-input" placeholder="Seu nome" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email" class="form-label">E-mail *</label>
-                            <input type="email" id="email" name="email" class="form-input" placeholder="seu@email.com"
-                                required>
-                        </div>
-                        <div class="form-group">
-                            <label for="phone" class="form-label">Telefone</label>
-                            <input type="tel" id="phone" name="phone" class="form-input" placeholder="(11) 99999-9999">
-                        </div>
-                        <div class="form-group">
-                            <label for="company" class="form-label">Empresa</label>
-                            <input type="text" id="company" name="company" class="form-input"
-                                placeholder="Nome da empresa">
-                        </div>
-                        <div class="form-group">
-                            <label for="subject" class="form-label">Assunto *</label>
-                            <select id="subject" name="subject" class="form-input" required>
-                                <option value="">Selecione um assunto</option>
-                                <option value="desenvolvimento">Desenvolvimento de Software</option>
-                                <option value="ia">Soluções de IA</option>
-                                <option value="consultoria">Consultoria Técnica</option>
-                                <option value="squads">Alocação de Squads</option>
-                                <option value="outro">Outro</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="message" class="form-label">Mensagem *</label>
-                            <textarea id="message" name="message" class="form-textarea"
-                                placeholder="Conte-nos sobre seu projeto..." required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-lg" style="width: 100%;">
-                            Enviar Mensagem
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2">
-                                <line x1="22" y1="2" x2="11" y2="13" />
-                                <polygon points="22 2 15 22 11 13 2 9 22 2" />
-                            </svg>
-                        </button>
-                    </form>
-                </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <footer class="footer">
+    </main>
+
+    <footer class="footer" role="contentinfo">
         <div class="container">
             <div class="footer-bottom" style="border: none; padding: 0;">
                 <p>© 2024 Soluto Tecnologia. Todos os direitos reservados.</p>

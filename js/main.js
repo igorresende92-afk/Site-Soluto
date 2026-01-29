@@ -30,9 +30,12 @@ function initNavigation() {
   // Mobile menu toggle
   if (mobileToggle) {
     mobileToggle.addEventListener('click', function () {
-      mobileToggle.classList.toggle('active');
+      const isExpanded = mobileToggle.classList.toggle('active');
       nav.classList.toggle('active');
-      document.body.style.overflow = nav.classList.contains('active') ? 'hidden' : '';
+      // Accessibility: toggle aria-expanded
+      mobileToggle.setAttribute('aria-expanded', isExpanded);
+      mobileToggle.setAttribute('aria-label', isExpanded ? 'Fechar menu de navegação' : 'Abrir menu de navegação');
+      document.body.style.overflow = isExpanded ? 'hidden' : '';
     });
 
     // Close menu on link click
@@ -41,6 +44,8 @@ function initNavigation() {
       link.addEventListener('click', function () {
         mobileToggle.classList.remove('active');
         nav.classList.remove('active');
+        mobileToggle.setAttribute('aria-expanded', 'false');
+        mobileToggle.setAttribute('aria-label', 'Abrir menu de navegação');
         document.body.style.overflow = '';
       });
     });

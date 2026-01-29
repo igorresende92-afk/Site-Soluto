@@ -1,11 +1,32 @@
 /* ==========================================================================
-   SOLUTO TECNOLOGIA - Form Validation
+   SOLUTO TECNOLOGIA - Form Validation + Web3Forms Integration
    ========================================================================== */
+
+/**
+ * CONFIGURAÇÃO WEB3FORMS
+ * =====================
+ * 1. Acesse https://web3forms.com
+ * 2. Digite seu email e receba a Access Key
+ * 3. Substitua 'YOUR_ACCESS_KEY_HERE' pela sua key no arquivo contato.html
+ *    (procure por: <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY_HERE">)
+ * 4. O formulário passará a enviar emails de verdade!
+ */
+
+// Detecta se está em modo de simulação (sem access key real)
+const WEB3FORMS_PLACEHOLDER = 'YOUR_ACCESS_KEY_HERE';
 
 document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('contact-form');
 
     if (!form) return;
+
+    // Check for success parameter in URL (redirect from Web3Forms)
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('success') === 'true') {
+        showSuccessMessage(form);
+        // Clean URL
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
 
     // Initialize form validation
     initFormValidation(form);
@@ -14,6 +35,12 @@ document.addEventListener('DOMContentLoaded', function () {
 function initFormValidation(form) {
     const fields = form.querySelectorAll('.form-input, .form-textarea');
     const submitBtn = form.querySelector('button[type="submit"]');
+    const accessKeyField = document.getElementById('web3forms-key');
+
+    // Check if Web3Forms is configured
+    const isWeb3FormsConfigured = accessKeyField &&
+        accessKeyField.value &&
+        accessKeyField.value !== WEB3FORMS_PLACEHOLDER;
 
     // Real-time validation on blur
     fields.forEach(field => {
@@ -57,8 +84,6 @@ function initFormValidation(form) {
 
     // Form submission
     form.addEventListener('submit', function (e) {
-        e.preventDefault();
-
         let isValid = true;
 
         fields.forEach(field => {
@@ -67,8 +92,20 @@ function initFormValidation(form) {
             }
         });
 
-        if (isValid) {
-            submitForm(form, submitBtn);
+        if (!isValid) {
+            e.preventDefault();
+            return;
+        }
+
+        // If Web3Forms is NOT configured, use simulation mode
+        if (!isWeb3FormsConfigured) {
+            e.preventDefault();
+            console.warn('⚠️ Web3Forms não configurado. Usando modo de simulação.');
+            console.info('💡 Para configurar, substitua YOUR_ACCESS_KEY_HERE em contato.html');
+            submitFormSimulation(form, submitBtn);
+        } else {
+            // Web3Forms IS configured - let form submit naturally
+            showLoadingState(submitBtn);
         }
     });
 }
@@ -78,6 +115,11 @@ function validateField(field) {
     const type = field.getAttribute('type') || field.tagName.toLowerCase();
     const name = field.getAttribute('name');
     const required = field.hasAttribute('required');
+
+    // Skip hidden fields
+    if (type === 'hidden' || type === 'checkbox') {
+        return true;
+    }
 
     // Remove existing error
     const existingError = field.parentElement.querySelector('.form-error');
@@ -135,29 +177,34 @@ function showError(field, message) {
     field.parentElement.appendChild(errorDiv);
 }
 
-function submitForm(form, submitBtn) {
-    const originalText = submitBtn.innerHTML;
-
-    // Show loading state
+function showLoadingState(submitBtn) {
     submitBtn.disabled = true;
     submitBtn.innerHTML = `
     <span class="loading-spinner" style="width: 20px; height: 20px; border-width: 2px;"></span>
     Enviando...
   `;
+}
 
-    // Simulate form submission (replace with actual endpoint)
+// Simulation mode (when Web3Forms is not configured)
+function submitFormSimulation(form, submitBtn) {
+    const originalText = submitBtn.innerHTML;
+
+    // Show loading state
+    showLoadingState(submitBtn);
+
+    // Simulate form submission
     setTimeout(() => {
         // Success state
         submitBtn.innerHTML = `
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <polyline points="20 6 9 17 4 12"></polyline>
       </svg>
-      Mensagem Enviada!
+      Mensagem Enviada! (Simulação)
     `;
         submitBtn.classList.add('btn-success');
 
         // Show success message
-        showSuccessMessage(form);
+        showSuccessMessage(form, true);
 
         // Reset form
         setTimeout(() => {
@@ -170,11 +217,15 @@ function submitForm(form, submitBtn) {
     }, 1500);
 }
 
-function showSuccessMessage(form) {
+function showSuccessMessage(form, isSimulation = false) {
     const existingMessage = form.querySelector('.success-message');
     if (existingMessage) {
         existingMessage.remove();
     }
+
+    const simulationNote = isSimulation
+        ? '<p style="margin: 4px 0 0; font-size: 12px; color: #ff6b00;">⚠️ Modo simulação - configure Web3Forms para enviar de verdade</p>'
+        : '';
 
     const successDiv = document.createElement('div');
     successDiv.className = 'success-message';
@@ -182,7 +233,7 @@ function showSuccessMessage(form) {
     <div style="
       background: rgba(0, 255, 136, 0.1);
       border: 1px solid rgba(0, 255, 136, 0.3);
-      border-radius: 12px;
+      border-radius: 8px;
       padding: 16px 24px;
       margin-top: 24px;
       text-align: center;
@@ -192,6 +243,7 @@ function showSuccessMessage(form) {
       <p style="margin: 8px 0 0; font-size: 14px; color: #8a8a9a;">
         Entraremos em contato em breve.
       </p>
+      ${simulationNote}
     </div>
   `;
 
@@ -213,6 +265,12 @@ errorStyles.textContent = `
   
   .btn-success {
     background: #00ff88 !important;
+  }
+  
+  .form-error {
+    color: #ff0080;
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
   }
 `;
 document.head.appendChild(errorStyles);
