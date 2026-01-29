@@ -45,10 +45,9 @@
 }
 
 .btn-secondary {
-    background: transparent;
+    background: var(--solid-bg);
     color: var(--color-white);
-    border: 1px solid var(--glass-border);
-    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--solid-border);
 }
 
 .btn-secondary:hover {
@@ -110,9 +109,10 @@
 }
 
 .card:hover {
-    border-color: rgba(0, 212, 255, 0.3);
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
+    border-color: var(--solid-border-hover);
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: var(--shadow-lg), var(--shadow-glow-blue);
+    background: var(--solid-bg-hover);
 }
 
 .card:hover::before {
@@ -155,7 +155,7 @@
 
 .case-card:hover {
     border-color: var(--color-neon-blue);
-    transform: translateY(-8px);
+    transform: translateY(-8px) scale(1.02);
     box-shadow: var(--shadow-glow-blue);
 }
 
