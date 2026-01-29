@@ -713,3 +713,121 @@
         font-size: var(--text-2xl);
     }
 }
+
+/* ===== FAQ Section (GEO Optimized) ===== */
+.faq-section {
+    background: linear-gradient(180deg, var(--color-bg-dark) 0%, rgba(0, 212, 255, 0.02) 100%);
+}
+
+.faq-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-6);
+    margin-top: var(--space-10);
+}
+
+.faq-item {
+    background: var(--solid-bg);
+    border: 1px solid var(--solid-border);
+    border-radius: var(--radius-sm);
+    padding: var(--space-6);
+    transition: all var(--transition-base);
+}
+
+.faq-item:hover {
+    border-color: var(--color-accent);
+    transform: translateY(-2px);
+}
+
+.faq-item h3 {
+    font-size: var(--text-lg);
+    font-weight: var(--font-semibold);
+    color: var(--color-white);
+    margin-bottom: var(--space-3);
+    line-height: 1.4;
+}
+
+.faq-item p {
+    color: var(--color-gray-light);
+    font-size: var(--text-base);
+    line-height: 1.7;
+}
+
+@media (max-width: 768px) {
+    .faq-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ===== Leadership Section (E-E-A-T) ===== */
+.leadership-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-6);
+    margin-top: var(--space-8);
+}
+
+.leader-card {
+    background: var(--solid-bg);
+    border: 1px solid var(--solid-border);
+    border-radius: var(--radius-sm);
+    padding: var(--space-6);
+    text-align: center;
+    transition: all var(--transition-base);
+}
+
+.leader-card:hover {
+    border-color: var(--color-neon-blue);
+    transform: translateY(-3px);
+}
+
+.leader-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: var(--gradient-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--text-2xl);
+    font-weight: var(--font-bold);
+    color: var(--color-black);
+    margin: 0 auto var(--space-4);
+}
+
+.leader-name {
+    font-size: var(--text-lg);
+    font-weight: var(--font-semibold);
+    color: var(--color-white);
+    margin-bottom: var(--space-1);
+}
+
+.leader-role {
+    font-size: var(--text-sm);
+    color: var(--color-accent);
+    margin-bottom: var(--space-3);
+}
+
+.leader-bio {
+    font-size: var(--text-sm);
+    color: var(--color-gray-light);
+    line-height: 1.6;
+    margin-bottom: var(--space-4);
+}
+
+.leader-social a {
+    color: var(--color-gray-light);
+    text-decoration: none;
+    font-size: var(--text-sm);
+    transition: color var(--transition-fast);
+}
+
+.leader-social a:hover {
+    color: var(--color-neon-blue);
+}
+
+@media (max-width: 768px) {
+    .leadership-grid {
+        grid-template-columns: 1fr;
+    }
+}

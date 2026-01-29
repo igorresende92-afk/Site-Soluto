@@ -17,6 +17,35 @@ html {
     -moz-osx-font-smoothing: grayscale;
 }
 
+/* ===== Accessibility: Skip Link ===== */
+.skip-link {
+    position: absolute;
+    top: -100%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: var(--space-3) var(--space-6);
+    background: var(--color-neon-blue);
+    color: var(--color-black);
+    font-weight: var(--font-semibold);
+    border-radius: var(--radius-sm);
+    z-index: 9999;
+    transition: top 0.3s ease;
+}
+
+.skip-link:focus {
+    top: var(--space-4);
+}
+
+/* ===== Focus States (Accessibility) ===== */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+    outline: 2px solid var(--color-neon-blue);
+    outline-offset: 2px;
+}
+
 body {
     font-family: var(--font-primary);
     font-size: var(--text-base);

@@ -19,6 +19,10 @@
 
   <title>Soluto Tecnologia | Software House - Desenvolvimento de Software e IA</title>
 
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="apple-touch-icon" href="favicon.svg">
+
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -32,9 +36,80 @@
   <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/animations.css">
   <link rel="stylesheet" href="css/pages.css">
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https://soluto.tech/">
+
+  <!-- JSON-LD Schema Markup (SEO/GEO) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://soluto.tech/#organization",
+        "name": "Soluto Tecnologia",
+        "url": "https://soluto.tech",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://soluto.tech/images/logo.png"
+        },
+        "description": "Software house especializada em desenvolvimento de software sob medida, soluções de IA e transformação digital.",
+        "foundingDate": "2016",
+        "numberOfEmployees": {
+          "@type": "QuantitativeValue",
+          "minValue": 40
+        },
+        "sameAs": [
+          "https://linkedin.com/company/soluto-tecnologia",
+          "https://github.com/soluto-tecnologia",
+          "https://instagram.com/solutotecnologia"
+        ],
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+55-11-99999-9999",
+          "contactType": "sales",
+          "email": "contato@soluto.tech",
+          "availableLanguage": ["Portuguese", "English"]
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "São Paulo",
+          "addressRegion": "SP",
+          "addressCountry": "BR"
+        }
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://soluto.tech/#website",
+        "url": "https://soluto.tech",
+        "name": "Soluto Tecnologia",
+        "publisher": {
+          "@id": "https://soluto.tech/#organization"
+        }
+      },
+      {
+        "@type": "ProfessionalService",
+        "@id": "https://soluto.tech/#service",
+        "name": "Desenvolvimento de Software e IA",
+        "provider": {
+          "@id": "https://soluto.tech/#organization"
+        },
+        "serviceType": ["Desenvolvimento de Software", "Inteligência Artificial", "Consultoria Técnica", "Squads Dedicados"],
+        "areaServed": {
+          "@type": "Country",
+          "name": "Brazil"
+        }
+      }
+    ]
+  }
+  </script>
 </head>
 
 <body>
+  <!-- Skip Link (Accessibility) -->
+  <a href="#hero" class="skip-link">Pular para o conteúdo principal</a>
+
   <!-- Header -->
   <header class="header" id="header">
     <div class="container">
@@ -540,6 +615,76 @@
     </div>
   </section>
 
+  <!-- FAQ Section (GEO Optimized) -->
+  <section class="section faq-section" id="faq" itemscope itemtype="https://schema.org/FAQPage">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="badge badge-primary">Perguntas Frequentes</span>
+        <h2>Dúvidas sobre nossos <span class="text-gradient">Serviços</span></h2>
+      </div>
+
+      <div class="faq-grid">
+        <div class="faq-item reveal stagger-1" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+          <h3 itemprop="name">O que é uma software house e como a Soluto pode ajudar minha empresa?</h3>
+          <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+            <p itemprop="text">Uma software house é uma empresa especializada em desenvolvimento de software sob medida.
+              A Soluto Tecnologia atua desde 2016 desenvolvendo sistemas personalizados, aplicativos mobile, soluções de
+              Inteligência Artificial e oferecendo consultoria técnica. Ajudamos empresas de todos os portes a
+              transformar desafios em soluções digitais eficientes.</p>
+          </div>
+        </div>
+
+        <div class="faq-item reveal stagger-2" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+          <h3 itemprop="name">Quanto custa desenvolver um software ou aplicativo com a Soluto?</h3>
+          <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+            <p itemprop="text">O investimento varia conforme a complexidade do projeto. Trabalhamos com modelos de preço
+              fixo para MVPs (a partir de R$ 50.000) e modelo de squads dedicados para projetos contínuos. Oferecemos
+              uma consulta inicial gratuita para entender sua necessidade e apresentar uma proposta personalizada.</p>
+          </div>
+        </div>
+
+        <div class="faq-item reveal stagger-3" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+          <h3 itemprop="name">A Soluto trabalha com Inteligência Artificial e ChatGPT?</h3>
+          <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+            <p itemprop="text">Sim! Somos especialistas em integração de IA em sistemas corporativos. Desenvolvemos
+              chatbots inteligentes, automação de processos com machine learning, análise preditiva e integração com
+              APIs de LLMs como GPT-4, Claude e Gemini. Já entregamos projetos de IA que geraram economias de mais de R$
+              8 milhões anuais para nossos clientes.</p>
+          </div>
+        </div>
+
+        <div class="faq-item reveal stagger-4" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+          <h3 itemprop="name">Vocês atendem startups ou apenas grandes empresas?</h3>
+          <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+            <p itemprop="text">Atendemos empresas de todos os portes. Para startups, oferecemos desenvolvimento de MVPs
+              com metodologia ágil e preço acessível. Para médias e grandes empresas, disponibilizamos squads dedicados,
+              modernização de sistemas legados e consultoria estratégica. Mais de 50 clientes confiam em nosso trabalho.
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-item reveal stagger-5" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+          <h3 itemprop="name">Qual é o prazo médio para desenvolver um projeto?</h3>
+          <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+            <p itemprop="text">O prazo depende da complexidade. Um MVP pode ser entregue em 8 a 12 semanas. Projetos de
+              médio porte levam de 3 a 6 meses. Utilizamos metodologias ágeis (Scrum/Kanban) com entregas incrementais,
+              permitindo que você acompanhe o progresso e teste funcionalidades durante o desenvolvimento.</p>
+          </div>
+        </div>
+
+        <div class="faq-item reveal stagger-6" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+          <h3 itemprop="name">Como funciona o modelo de squads dedicados?</h3>
+          <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+            <p itemprop="text">No modelo de squads, montamos um time exclusivo para seu projeto, composto por
+              desenvolvedores, designers, tech leads e product managers. Eles trabalham como extensão do seu time
+              interno, com dedicação integral. É ideal para projetos de longo prazo que exigem evolução contínua e alta
+              disponibilidade.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Footer -->
   <footer class="footer" id="footer">
     <div class="container">
@@ -611,7 +756,8 @@
       </div>
 
       <div class="footer-bottom">
-        <p>© 2024 Soluto Tecnologia. Todos os direitos reservados.</p>
+        <p>© <span id="year">2025</span> Soluto Tecnologia. Todos os direitos reservados.</p>
+        <p style="font-size: var(--text-xs); color: var(--color-gray);">Última atualização: Janeiro 2025</p>
         <div class="flex gap-4">
           <a href="privacidade.html">Política de Privacidade</a>
           <a href="termos.html">Termos de Uso</a>
@@ -622,6 +768,7 @@
 
   <!-- Scripts -->
   <script src="js/main.js"></script>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 </body>
 
 </html>

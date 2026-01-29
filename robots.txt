@@ -1,0 +1,26 @@
+# Robots.txt - Soluto Tecnologia
+# Last Updated: 2026-01-28
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://soluto.tech/sitemap.xml
+
+# AI Crawlers - Allowing for GEO visibility
+User-agent: GPTBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+# Block admin/dev paths if any
+Disallow: /admin/
+Disallow: /.git/
+Disallow: /.agent/
