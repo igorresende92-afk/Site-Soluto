@@ -152,7 +152,7 @@ server {
 NGINX_EOF
 
 # Replace placeholder with actual server name
-sed -i "s/SERVER_NAME_PLACEHOLDER/$SERVER_NAME/g" "$NGINX_CONF"
+sed -i "s|SERVER_NAME_PLACEHOLDER|$SERVER_NAME|g" "$NGINX_CONF"
 
 echo -e "${GREEN}✅ Nginx configurado!${NC}"
 
