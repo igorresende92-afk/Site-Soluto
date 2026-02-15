@@ -1,13 +1,23 @@
 <?php
-require_once __DIR__ . '/config.php';
+/**
+ * FinFlow API - Admin Endpoints
+ * GET    /api/admin.php?action=users          → List all users
+ * POST   /api/admin.php?action=create_user    → Create user
+ * PUT    /api/admin.php?action=update_user&id= → Update user
+ * DELETE /api/admin.php?action=delete_user&id= → Delete user
+ */
 
-$user = requireAuth();
+require_once __DIR__ . '/config.php';
+setCorsHeaders();
+
+$user = getAuthUser();
 if (!$user['is_admin']) {
     http_response_code(403);
     echo json_encode(['error' => 'Acesso negado']);
     exit;
 }
 
+$db = getDB();
 $action = $_GET['action'] ?? '';
 $method = $_SERVER['REQUEST_METHOD'];
 
@@ -17,7 +27,7 @@ switch ($action) {
             http_response_code(405);
             exit;
         }
-        $stmt = $pdo->query("SELECT id, name, email, photo, is_premium, is_admin, created_at FROM users ORDER BY id");
+        $stmt = $db->query("SELECT id, name, email, photo, is_premium, is_admin, created_at FROM users ORDER BY id");
         $rows = $stmt->fetchAll();
         $result = array_map(function ($r) {
             return [
@@ -38,22 +48,33 @@ switch ($action) {
             http_response_code(405);
             exit;
         }
-        $data = json_decode(file_get_contents('php://input'), true);
+        $data = jsonInput();
         $name = trim($data['name'] ?? '');
-        $email = trim($data['email'] ?? '');
+        $email = strtolower(trim($data['email'] ?? ''));
         $password = $data['password'] ?? '';
         $isPremium = !empty($data['isPremium']);
         $isAdmin = !empty($data['isAdmin']);
 
         if (!$name || !$email || !$password) {
-            http_response_code(400);
-            echo json_encode(['error' => 'Nome, email e senha são obrigatórios']);
-            exit;
+            errorResponse('Nome, email e senha são obrigatórios');
         }
 
-        $stmt = $pdo->prepare("INSERT INTO users (name, email, password, is_premium, is_admin, created_at) VALUES (?, ?, ?, ?, ?, NOW())");
+        // Check duplicate email
+        $check = $db->prepare("SELECT id FROM users WHERE email = ?");
+        $check->execute([$email]);
+        if ($check->fetch()) {
+            errorResponse('Este e-mail já está cadastrado');
+        }
+
+        $stmt = $db->prepare("INSERT INTO users (name, email, password_hash, is_premium, is_admin, created_at) VALUES (?, ?, ?, ?, ?, NOW())");
         $stmt->execute([$name, $email, $password, $isPremium ? 1 : 0, $isAdmin ? 1 : 0]);
-        echo json_encode(['id' => (int) $pdo->lastInsertId()]);
+
+        $userId = (int) $db->lastInsertId();
+
+        // Seed default categories for the new user
+        seedCategoriesForUser($db, $userId);
+
+        jsonResponse(['id' => $userId], 201);
         break;
 
     case 'update_user':
@@ -63,12 +84,10 @@ switch ($action) {
         }
         $id = (int) ($_GET['id'] ?? 0);
         if (!$id) {
-            http_response_code(400);
-            echo json_encode(['error' => 'ID obrigatório']);
-            exit;
+            errorResponse('ID obrigatório');
         }
 
-        $data = json_decode(file_get_contents('php://input'), true);
+        $data = jsonInput();
         $fields = [];
         $params = [];
 
@@ -78,10 +97,10 @@ switch ($action) {
         }
         if (isset($data['email'])) {
             $fields[] = 'email = ?';
-            $params[] = $data['email'];
+            $params[] = strtolower(trim($data['email']));
         }
         if (!empty($data['password'])) {
-            $fields[] = 'password = ?';
+            $fields[] = 'password_hash = ?';
             $params[] = $data['password'];
         }
         if (isset($data['isPremium'])) {
@@ -94,14 +113,13 @@ switch ($action) {
         }
 
         if (empty($fields)) {
-            echo json_encode(['ok' => true]);
-            exit;
+            jsonResponse(['ok' => true]);
         }
 
         $params[] = $id;
-        $stmt = $pdo->prepare("UPDATE users SET " . implode(', ', $fields) . " WHERE id = ?");
+        $stmt = $db->prepare("UPDATE users SET " . implode(', ', $fields) . " WHERE id = ?");
         $stmt->execute($params);
-        echo json_encode(['ok' => true]);
+        jsonResponse(['ok' => true]);
         break;
 
     case 'delete_user':
@@ -111,17 +129,42 @@ switch ($action) {
         }
         $id = (int) ($_GET['id'] ?? 0);
         if (!$id) {
-            http_response_code(400);
-            echo json_encode(['error' => 'ID obrigatório']);
-            exit;
+            errorResponse('ID obrigatório');
         }
 
-        $stmt = $pdo->prepare("DELETE FROM users WHERE id = ?");
+        // Prevent deleting yourself
+        if ($id === $user['user_id']) {
+            errorResponse('Você não pode excluir seu próprio usuário');
+        }
+
+        $stmt = $db->prepare("DELETE FROM users WHERE id = ?");
         $stmt->execute([$id]);
-        echo json_encode(['ok' => true]);
+        jsonResponse(['ok' => true]);
         break;
 
     default:
-        http_response_code(400);
-        echo json_encode(['error' => 'Ação inválida']);
+        errorResponse('Ação inválida', 404);
+}
+
+function seedCategoriesForUser(PDO $db, int $userId): void
+{
+    $categories = [
+        ['Salário', 'Banknote', 'income', '#2ed573'],
+        ['Freelance', 'Laptop', 'income', '#00f3ff'],
+        ['Investimentos', 'TrendingUp', 'income', '#7c3aed'],
+        ['Outros', 'Plus', 'income', '#64748b'],
+        ['Alimentação', 'UtensilsCrossed', 'expense', '#ff6b6b'],
+        ['Transporte', 'Car', 'expense', '#ffa502'],
+        ['Moradia', 'Home', 'expense', '#1e90ff'],
+        ['Saúde', 'Heart', 'expense', '#ff4757'],
+        ['Educação', 'GraduationCap', 'expense', '#2ed573'],
+        ['Lazer', 'Gamepad2', 'expense', '#ff00ff'],
+        ['Assinaturas', 'CreditCard', 'expense', '#00f3ff'],
+        ['Compras', 'ShoppingBag', 'expense', '#f472b6'],
+        ['Outros', 'MoreHorizontal', 'expense', '#64748b'],
+    ];
+    $stmt = $db->prepare("INSERT INTO categories (user_id, name, icon, type, color) VALUES (?, ?, ?, ?, ?)");
+    foreach ($categories as $cat) {
+        $stmt->execute([$userId, ...$cat]);
+    }
 }
