@@ -8,6 +8,10 @@
 RewriteEngine On
 RewriteBase /Site-Soluto/FinFlow/
 
+# Passar header Authorization para o PHP (CGI/FastCGI)
+RewriteCond %{HTTP:Authorization} .
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
 # Forçar HTTPS (descomente em produção com SSL)
 # RewriteCond %{HTTPS} off
 # RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]

@@ -7,6 +7,10 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
+    # Passar header Authorization para o PHP (CGI/FastCGI)
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
     # Permitir acesso direto aos arquivos .php
     RewriteCond %{REQUEST_FILENAME} -f
     RewriteRule \.php$ - [L]
