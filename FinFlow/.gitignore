@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+
+# Agent config
+.agent/
+
+# Build (rebuild on server with: npx vite build)
+# dist/  ← NOT ignored — we push the build to production
+
+# Environment / Secrets
+api/config.php
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

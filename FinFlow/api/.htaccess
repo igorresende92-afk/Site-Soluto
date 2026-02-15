@@ -1,0 +1,44 @@
+# ================================================================
+# FinFlow API - Apache Configuration
+# Configuração específica para a pasta /api/
+# ================================================================
+
+# Garantir que PHP seja executado normalmente
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Permitir acesso direto aos arquivos .php
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule \.php$ - [L]
+</IfModule>
+
+# Bloquear acesso direto ao config e schema
+<FilesMatch "^(config\.php|schema\.sql)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order deny,allow
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Impedir listagem de diretórios
+Options -Indexes
+
+# Headers CORS (backup - já definidos no config.php)
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+    Header set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+    Header set Access-Control-Allow-Headers "Content-Type, Authorization"
+</IfModule>
+
+# Sem cache para respostas da API
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresDefault "access plus 0 seconds"
+</IfModule>
+<IfModule mod_headers.c>
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+</IfModule>

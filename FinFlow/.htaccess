@@ -1,0 +1,99 @@
+# ================================================================
+# FinFlow - Apache Configuration
+# Deploy em: /Site-Soluto/FinFlow/
+# URL: https://solutotecnologia.com.br/Site-Soluto/FinFlow/
+# ================================================================
+
+# ── Mod Rewrite ──
+RewriteEngine On
+RewriteBase /Site-Soluto/FinFlow/
+
+# Forçar HTTPS (descomente em produção com SSL)
+# RewriteCond %{HTTPS} off
+# RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# ── Bloquear pastas do código-fonte ──
+# Impedir acesso direto a src/, node_modules/, .agent/, .vscode/, dist/
+RewriteRule ^(src|node_modules|\.agent|\.vscode|\.git|dist)(/|$) - [F,L]
+
+# ── Bloquear arquivos sensíveis ──
+RewriteRule ^(package\.json|package-lock\.json|tsconfig\.json|tsconfig\.tsbuildinfo|vite\.config\.ts)$ - [F,L]
+
+# ── API Routing ──
+# Requisições para /api/ vão direto para os arquivos PHP
+RewriteCond %{REQUEST_URI} ^/Site-Soluto/FinFlow/api/ [NC]
+RewriteRule ^ - [L]
+
+# ── SPA Fallback ──
+# Se o arquivo/diretório não existe, redireciona para index.html
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ /Site-Soluto/FinFlow/index.html [L]
+
+# ── Segurança ──
+<FilesMatch "^(config\.php|schema\.sql|\.env|\.htaccess)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order deny,allow
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Bloquear arquivos ocultos (.git, .env, etc.)
+<IfModule mod_rewrite.c>
+    RewriteRule (^\.|/\.) - [F]
+</IfModule>
+
+# Impedir listagem de diretórios
+Options -Indexes
+
+# ── Headers de Segurança ──
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# ── Compressão GZIP ──
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE text/javascript
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/json
+    AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+# ── Cache de Assets Estáticos ──
+<IfModule mod_expires.c>
+    ExpiresActive On
+
+    <FilesMatch "\.(js|css|woff2?|ttf|eot)$">
+        ExpiresDefault "access plus 1 year"
+    </FilesMatch>
+
+    <FilesMatch "\.(jpg|jpeg|png|gif|webp|svg|ico)$">
+        ExpiresDefault "access plus 1 month"
+    </FilesMatch>
+
+    <FilesMatch "\.(html|json)$">
+        ExpiresDefault "access plus 0 seconds"
+        Header set Cache-Control "no-cache, no-store, must-revalidate"
+        Header set Pragma "no-cache"
+    </FilesMatch>
+
+    <FilesMatch "\.php$">
+        ExpiresDefault "access plus 0 seconds"
+        Header set Cache-Control "no-cache, no-store, must-revalidate"
+    </FilesMatch>
+</IfModule>
+
+# ── PHP Config ──
+<IfModule mod_php.c>
+    php_value upload_max_filesize 5M
+    php_value post_max_size 10M
+    php_value max_execution_time 30
+</IfModule>
