@@ -7,6 +7,9 @@
  * Hashes a password using SHA-256 via Web Crypto API.
  * Returns a 64-character hex string.
  */
+/**
+ * @deprecated Backend now handles password hashing. Use plain password.
+ */
 export async function hashPassword(password: string): Promise<string> {
     const encoder = new TextEncoder()
     const data = encoder.encode(password)

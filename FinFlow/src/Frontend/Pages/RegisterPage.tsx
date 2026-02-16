@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { apiRegister, setToken } from '../../Services/api'
-import { hashPassword, validatePasswordStrength } from '../../Backend/Application/Utils/crypto'
+import { setToken, apiRegister } from '../../Services/api'
+import { validatePasswordStrength } from '../../Backend/Application/Utils/crypto'
 import './LoginPage.css'
 
 interface RegisterPageProps {
@@ -33,8 +33,8 @@ export function RegisterPage({ onRegister, onGoLogin }: RegisterPageProps) {
 
         setIsLoading(true)
         try {
-            const hashedPwd = await hashPassword(password)
-            const { token, user } = await apiRegister(name.trim(), email.trim().toLowerCase(), hashedPwd)
+            // Send plain password - Backend handles hashing
+            const { token, user } = await apiRegister(name.trim(), email.trim().toLowerCase(), password)
 
             setToken(token)
 

@@ -3,23 +3,35 @@
  * FinFlow API - Transactions CRUD
  */
 
-require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/bootstrap.php';
+
+use FinFlow\Services\TransactionService;
+use FinFlow\Utils\Response;
+
 setCorsHeaders();
 $auth = getAuthUser();
 $userId = $auth['user_id'];
-$db = getDB();
+// $db = getDB(); // Not needed globally if using service for writes, but listTransactions still uses it.
 
-match ($_SERVER['REQUEST_METHOD']) {
-    'GET' => listTransactions(),
-    'POST' => createTransaction(),
-    'PUT' => updateTransaction(),
-    'DELETE' => deleteTransaction(),
-    default => errorResponse('Método não suportado', 405),
-};
+$service = new TransactionService();
+$service->setUserId($userId);
+
+try {
+    match ($_SERVER['REQUEST_METHOD']) {
+        'GET' => listTransactions(),
+        'POST' => createTransaction($service),
+        'PUT' => updateTransaction($service),
+        'DELETE' => deleteTransaction($service),
+        default => Response::error('Método não suportado', 405),
+    };
+} catch (Exception $e) {
+    Response::error($e->getMessage(), 500);
+}
 
 function listTransactions(): void
 {
-    global $db, $userId;
+    global $userId;
+    $db = \FinFlow\Config\Database::getConnection();
 
     $month = $_GET['month'] ?? null; // 'YYYY-MM'
     $accountId = $_GET['account_id'] ?? null;
@@ -45,83 +57,26 @@ function listTransactions(): void
     jsonResponse(array_map('formatTransaction', $stmt->fetchAll()));
 }
 
-function createTransaction(): void
+function createTransaction(TransactionService $service): void
 {
-    global $db, $userId;
     $input = jsonInput();
-
-    $stmt = $db->prepare(
-        "INSERT INTO transactions
-         (user_id, description, amount, type, date, account_id, to_account_id,
-          credit_card_id, category_id, is_recurring, recurrence_count,
-          recurrence_group_id, installment_current, installment_total, is_realized)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
-    );
-    $stmt->execute([
-        $userId,
-        $input['description'] ?? '',
-        $input['amount'] ?? 0,
-        $input['type'] ?? 'expense',
-        $input['date'] ?? date('Y-m-d'),
-        $input['accountId'] ?? 0,
-        $input['toAccountId'] ?? null,
-        $input['creditCardId'] ?? null,
-        $input['categoryId'] ?? 0,
-        $input['isRecurring'] ? 1 : 0,
-        $input['recurrenceCount'] ?? null,
-        $input['recurrenceGroupId'] ?? null,
-        $input['installmentCurrent'] ?? null,
-        $input['installmentTotal'] ?? null,
-        $input['isRealized'] ? 1 : 0,
-    ]);
-
-    jsonResponse(['id' => (int) $db->lastInsertId()], 201);
+    $id = $service->create($input);
+    Response::json(['id' => $id], 201);
 }
 
-function updateTransaction(): void
+function updateTransaction(TransactionService $service): void
 {
-    global $db, $userId;
     $id = (int) ($_GET['id'] ?? 0);
     $input = jsonInput();
-
-    $stmt = $db->prepare(
-        "UPDATE transactions SET
-         description=?, amount=?, type=?, date=?, account_id=?, to_account_id=?,
-         credit_card_id=?, category_id=?, is_recurring=?, recurrence_count=?,
-         recurrence_group_id=?, installment_current=?, installment_total=?, is_realized=?
-         WHERE id=? AND user_id=?"
-    );
-    $stmt->execute([
-        $input['description'] ?? '',
-        $input['amount'] ?? 0,
-        $input['type'] ?? 'expense',
-        $input['date'] ?? date('Y-m-d'),
-        $input['accountId'] ?? 0,
-        $input['toAccountId'] ?? null,
-        $input['creditCardId'] ?? null,
-        $input['categoryId'] ?? 0,
-        $input['isRecurring'] ? 1 : 0,
-        $input['recurrenceCount'] ?? null,
-        $input['recurrenceGroupId'] ?? null,
-        $input['installmentCurrent'] ?? null,
-        $input['installmentTotal'] ?? null,
-        $input['isRealized'] ? 1 : 0,
-        $id,
-        $userId,
-    ]);
-
-    jsonResponse(['ok' => true]);
+    $service->update($id, $input);
+    Response::json(['ok' => true]);
 }
 
-function deleteTransaction(): void
+function deleteTransaction(TransactionService $service): void
 {
-    global $db, $userId;
     $id = (int) ($_GET['id'] ?? 0);
-
-    $stmt = $db->prepare("DELETE FROM transactions WHERE id = ? AND user_id = ?");
-    $stmt->execute([$id, $userId]);
-
-    jsonResponse(['ok' => true]);
+    $service->delete($id);
+    Response::json(['ok' => true]);
 }
 
 function formatTransaction(array $r): array

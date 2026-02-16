@@ -1,84 +1,53 @@
 <?php
-/**
- * FinFlow API - Budget Goals CRUD
- */
 
-require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/bootstrap.php';
+
+use FinFlow\Services\BudgetService;
+use FinFlow\Utils\Response;
+
 setCorsHeaders();
 $auth = getAuthUser();
 $userId = $auth['user_id'];
-$db = getDB();
 
-match ($_SERVER['REQUEST_METHOD']) {
-    'GET' => listGoals(),
-    'POST' => createGoal(),
-    'PUT' => updateGoal(),
-    'DELETE' => deleteGoal(),
-    default => errorResponse('Método não suportado', 405),
-};
+$service = new BudgetService();
+$service->setUserId($userId);
 
-function listGoals(): void
-{
-    global $db, $userId;
-    $stmt = $db->prepare("SELECT * FROM budget_goals WHERE user_id = ? ORDER BY month DESC");
-    $stmt->execute([$userId]);
-
-    jsonResponse(array_map(function ($r) {
-        return [
-            'id' => (int) $r['id'],
-            'categoryId' => (int) $r['category_id'],
-            'month' => $r['month'],
-            'limitAmount' => (float) $r['limit_amount'],
-        ];
-    }, $stmt->fetchAll()));
+try {
+    match ($_SERVER['REQUEST_METHOD']) {
+        'GET' => listGoals($service),
+        'POST' => createGoal($service),
+        'PUT' => updateGoal($service),
+        'DELETE' => deleteGoal($service),
+        default => Response::error('Método não suportado', 405),
+    };
+} catch (Exception $e) {
+    Response::error($e->getMessage(), 500);
 }
 
-function createGoal(): void
+function listGoals(BudgetService $service): void
 {
-    global $db, $userId;
+    Response::json($service->list());
+}
+
+function createGoal(BudgetService $service): void
+{
     $input = jsonInput();
-
-    $stmt = $db->prepare(
-        "INSERT INTO budget_goals (user_id, category_id, month, limit_amount) VALUES (?, ?, ?, ?)
-         ON DUPLICATE KEY UPDATE limit_amount = VALUES(limit_amount)"
-    );
-    $stmt->execute([
-        $userId,
-        $input['categoryId'] ?? 0,
-        $input['month'] ?? date('Y-m'),
-        $input['limitAmount'] ?? 0,
-    ]);
-
-    jsonResponse(['id' => (int) $db->lastInsertId()], 201);
+    $id = $service->create($input);
+    Response::json(['id' => $id], 201);
 }
 
-function updateGoal(): void
+function updateGoal(BudgetService $service): void
 {
-    global $db, $userId;
     $id = (int) ($_GET['id'] ?? 0);
     $input = jsonInput();
-
-    $stmt = $db->prepare(
-        "UPDATE budget_goals SET category_id=?, month=?, limit_amount=? WHERE id=? AND user_id=?"
-    );
-    $stmt->execute([
-        $input['categoryId'] ?? 0,
-        $input['month'] ?? date('Y-m'),
-        $input['limitAmount'] ?? 0,
-        $id,
-        $userId,
-    ]);
-
-    jsonResponse(['ok' => true]);
+    $service->update($id, $input);
+    Response::json(['ok' => true]);
 }
 
-function deleteGoal(): void
+function deleteGoal(BudgetService $service): void
 {
-    global $db, $userId;
     $id = (int) ($_GET['id'] ?? 0);
-
-    $stmt = $db->prepare("DELETE FROM budget_goals WHERE id = ? AND user_id = ?");
-    $stmt->execute([$id, $userId]);
-
-    jsonResponse(['ok' => true]);
+    $service->delete($id);
+    Response::json(['ok' => true]);
 }
+

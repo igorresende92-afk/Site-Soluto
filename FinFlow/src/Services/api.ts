@@ -169,6 +169,10 @@ export async function apiDeleteCategory(id: number): Promise<void> {
     return request(`/categories.php?id=${id}`, { method: 'DELETE' });
 }
 
+export async function apiGenerateDefaults(): Promise<void> {
+    return request('/categories.php?action=defaults', { method: 'POST' });
+}
+
 // ---- Transactions ----
 export interface ApiTransaction {
     id: number;

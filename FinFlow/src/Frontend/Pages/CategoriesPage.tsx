@@ -1,9 +1,9 @@
 import { useState, useEffect, useCallback } from 'react'
 import {
     apiGetCategories, apiCreateCategory, apiUpdateCategory, apiDeleteCategory,
-    type ApiCategory
+    apiGenerateDefaults, type ApiCategory
 } from '../../Services/api'
-import { Plus, X, Pencil, Trash2, Tags } from 'lucide-react'
+import { Plus, X, Pencil, Trash2, Tags, RefreshCcw } from 'lucide-react'
 
 const defaultColors = ['#00f3ff', '#7c3aed', '#2ed573', '#ff4757', '#ffa502', '#ff6b6b', '#1e90ff', '#f472b6', '#64748b']
 const iconOptions = [
@@ -67,6 +67,18 @@ export function CategoriesPage() {
         }
     }
 
+    const handleGenerateDefaults = async () => {
+        if (confirm('Deseja gerar as categorias padrão? Isso adicionará categorias ausentes.')) {
+            try {
+                await apiGenerateDefaults()
+                loadCategories()
+            } catch (e) {
+                console.error(e)
+                alert('Erro ao gerar categorias')
+            }
+        }
+    }
+
     const renderList = (list: ApiCategory[], label: string) => (
         <div style={{ marginBottom: 'var(--space-xl)' }}>
             <div className="section-header">
@@ -102,9 +114,14 @@ export function CategoriesPage() {
         <div className="page">
             <div className="page-header">
                 <h1 className="page-title">Categorias</h1>
-                <button className="btn btn-primary" onClick={openNew}>
-                    <Plus size={18} /> Nova
-                </button>
+                <div style={{ display: 'flex', gap: 8 }}>
+                    <button className="btn btn-secondary" onClick={handleGenerateDefaults} style={{ fontSize: '0.8rem', padding: '8px 12px' }} title="Restaurar Padrões">
+                        <RefreshCcw size={16} />
+                    </button>
+                    <button className="btn btn-primary" onClick={openNew}>
+                        <Plus size={18} /> Nova
+                    </button>
+                </div>
             </div>
 
             <div className="container">

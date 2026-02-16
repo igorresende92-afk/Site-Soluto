@@ -1,80 +1,50 @@
 <?php
-/**
- * FinFlow API - User Profile
- * PUT /api/users.php?action=update_name
- * PUT /api/users.php?action=update_photo
- * PUT /api/users.php?action=change_password
- */
 
-require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/bootstrap.php';
+
+use FinFlow\Services\UserService;
+use FinFlow\Utils\Response;
+
 setCorsHeaders();
 $auth = getAuthUser();
 $userId = $auth['user_id'];
-$db = getDB();
 
-$action = $_GET['action'] ?? '';
+$service = new UserService();
+$service->setUserId($userId);
 
-match ($action) {
-    'update_name' => updateName(),
-    'update_photo' => updatePhoto(),
-    'change_password' => changePassword(),
-    'export' => exportData(),
-    default => errorResponse('Ação inválida', 404),
-};
-
-function updateName(): void
-{
-    global $db, $userId;
-    $input = jsonInput();
-    $name = trim($input['name'] ?? '');
-    if (!$name)
-        errorResponse('Nome é obrigatório');
-
-    $stmt = $db->prepare("UPDATE users SET name = ? WHERE id = ?");
-    $stmt->execute([$name, $userId]);
-
-    jsonResponse(['ok' => true]);
-}
-
-function updatePhoto(): void
-{
-    global $db, $userId;
-    $input = jsonInput();
-
-    $stmt = $db->prepare("UPDATE users SET photo = ? WHERE id = ?");
-    $stmt->execute([$input['photo'] ?? null, $userId]);
-
-    jsonResponse(['ok' => true]);
-}
-
-function changePassword(): void
-{
-    global $db, $userId;
-    $input = jsonInput();
-    $currentHash = $input['currentPassword'] ?? '';
-    $newHash = $input['newPassword'] ?? '';
-
-    if (!$currentHash || !$newHash)
-        errorResponse('Senhas são obrigatórias');
-
-    // Validate current password
-    $stmt = $db->prepare("SELECT password_hash FROM users WHERE id = ?");
-    $stmt->execute([$userId]);
-    $user = $stmt->fetch();
-
-    if ($user['password_hash'] !== $currentHash) {
-        errorResponse('Senha atual incorreta', 401);
+try {
+    $action = $_GET['action'] ?? '';
+    if ($action === 'export') {
+        handleExport();
+    } else {
+        match ($_SERVER['REQUEST_METHOD']) {
+            'PUT' => changePasswordOrProfile($service, $action),
+            default => Response::error('Método não suportado', 405),
+        };
     }
-
-    $stmt = $db->prepare("UPDATE users SET password_hash = ? WHERE id = ?");
-    $stmt->execute([$newHash, $userId]);
-
-    jsonResponse(['ok' => true]);
+} catch (Exception $e) {
+    Response::error($e->getMessage(), 500);
 }
 
-function exportData(): void
+function changePasswordOrProfile(UserService $service, string $action): void
 {
-    global $db, $userId;
+    $input = jsonInput();
+
+    if ($action === 'change_password') {
+        $service->changePassword($input['currentPassword'] ?? '', $input['newPassword'] ?? '');
+        Response::json(['ok' => true]);
+    } else {
+        // Assume profile update (name, photo)
+        // Simplification: just pass input to updateProfile
+        $service->updateProfile($input);
+        Response::json(['ok' => true]);
+    }
+}
+
+function handleExport(): void
+{
+    global $userId;
+    $db = \FinFlow\Config\Database::getConnection();
 
     $data = [];
     $tables = ['accounts', 'credit_cards', 'categories', 'transactions', 'budget_goals'];
@@ -85,5 +55,6 @@ function exportData(): void
         $data[$table] = $stmt->fetchAll();
     }
 
-    jsonResponse($data);
+    Response::json($data);
 }
+

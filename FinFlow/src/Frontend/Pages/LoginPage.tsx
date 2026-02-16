@@ -1,6 +1,5 @@
 import { useState, useRef } from 'react'
-import { apiLogin, setToken } from '../../Services/api'
-import { hashPassword } from '../../Backend/Application/Utils/crypto'
+import { setToken, apiLogin } from '../../Services/api'
 import './LoginPage.css'
 
 interface LoginPageProps {
@@ -33,8 +32,8 @@ export function LoginPage({ onLogin, onGoRegister }: LoginPageProps) {
 
         setIsLoading(true)
         try {
-            const hashedInput = await hashPassword(password)
-            const { token, user } = await apiLogin(email.trim().toLowerCase(), hashedInput)
+            // Send plain password - Backend handles hashing (Bcrypt) and migration
+            const { token, user } = await apiLogin(email.trim().toLowerCase(), password)
 
             setToken(token)
 

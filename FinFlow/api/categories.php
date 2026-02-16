@@ -1,86 +1,61 @@
 <?php
-/**
- * FinFlow API - Categories CRUD
- */
 
-require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/bootstrap.php';
+
+use FinFlow\Services\CategoryService;
+use FinFlow\Utils\Response;
+
 setCorsHeaders();
 $auth = getAuthUser();
 $userId = $auth['user_id'];
-$db = getDB();
 
-match ($_SERVER['REQUEST_METHOD']) {
-    'GET' => listCategories(),
-    'POST' => createCategory(),
-    'PUT' => updateCategory(),
-    'DELETE' => deleteCategory(),
-    default => errorResponse('Método não suportado', 405),
-};
+$service = new CategoryService();
+$service->setUserId($userId);
 
-function listCategories(): void
-{
-    global $db, $userId;
-    $stmt = $db->prepare("SELECT * FROM categories WHERE user_id = ? ORDER BY type, name");
-    $stmt->execute([$userId]);
-
-    jsonResponse(array_map(function ($r) {
-        return [
-            'id' => (int) $r['id'],
-            'name' => $r['name'],
-            'icon' => $r['icon'],
-            'type' => $r['type'],
-            'color' => $r['color'],
-        ];
-    }, $stmt->fetchAll()));
+try {
+    match ($_SERVER['REQUEST_METHOD']) {
+        'GET' => listCategories($service),
+        'POST' => createCategoryOrAction($service),
+        'PUT' => updateCategory($service),
+        'DELETE' => deleteCategory($service),
+        default => Response::error('Método não suportado', 405),
+    };
+} catch (Exception $e) {
+    Response::error($e->getMessage(), 500);
 }
 
-function createCategory(): void
+function createCategoryOrAction(CategoryService $service): void
 {
-    global $db, $userId;
-    $input = jsonInput();
-
-    $stmt = $db->prepare(
-        "INSERT INTO categories (user_id, name, icon, type, color) VALUES (?, ?, ?, ?, ?)"
-    );
-    $stmt->execute([
-        $userId,
-        $input['name'] ?? 'Categoria',
-        $input['icon'] ?? 'MoreHorizontal',
-        $input['type'] ?? 'expense',
-        $input['color'] ?? '#64748b',
-    ]);
-
-    jsonResponse(['id' => (int) $db->lastInsertId()], 201);
+    $action = $_GET['action'] ?? '';
+    if ($action === 'defaults') {
+        $service->seedDefaults();
+        Response::json(['ok' => true, 'message' => 'Categorias padrão geradas com sucesso']);
+    } else {
+        $input = jsonInput();
+        $id = $service->create($input);
+        Response::json(['id' => $id], 201);
+    }
 }
 
-function updateCategory(): void
+function listCategories(CategoryService $service): void
 {
-    global $db, $userId;
+    Response::json($service->list());
+}
+
+function updateCategory(CategoryService $service): void
+{
     $id = (int) ($_GET['id'] ?? 0);
     $input = jsonInput();
-
-    $stmt = $db->prepare(
-        "UPDATE categories SET name=?, icon=?, type=?, color=? WHERE id=? AND user_id=?"
-    );
-    $stmt->execute([
-        $input['name'] ?? 'Categoria',
-        $input['icon'] ?? 'MoreHorizontal',
-        $input['type'] ?? 'expense',
-        $input['color'] ?? '#64748b',
-        $id,
-        $userId,
-    ]);
-
-    jsonResponse(['ok' => true]);
+    $service->update($id, $input);
+    Response::json(['ok' => true]);
 }
 
-function deleteCategory(): void
+function deleteCategory(CategoryService $service): void
 {
-    global $db, $userId;
     $id = (int) ($_GET['id'] ?? 0);
-
-    $stmt = $db->prepare("DELETE FROM categories WHERE id = ? AND user_id = ?");
-    $stmt->execute([$id, $userId]);
-
-    jsonResponse(['ok' => true]);
+    $service->delete($id);
+    Response::json(['ok' => true]);
 }
+
+
+

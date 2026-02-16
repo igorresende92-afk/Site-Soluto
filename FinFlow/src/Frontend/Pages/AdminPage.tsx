@@ -41,11 +41,17 @@ export function AdminPage() {
 
     const loadData = useCallback(async () => {
         try {
-            const [{ user }, allUsers] = await Promise.all([
-                apiGetMe(), apiAdminGetUsers()
-            ])
+            const { user } = await apiGetMe()
             setCurrentUser(user)
-            setUsers(allUsers)
+
+            if (user.isAdmin) {
+                try {
+                    const allUsers = await apiAdminGetUsers()
+                    setUsers(allUsers)
+                } catch (e) {
+                    console.error('Erro ao buscar usuários:', e)
+                }
+            }
         } catch (e) { console.error(e) }
         setLoading(false)
     }, [])
