@@ -18,7 +18,7 @@ RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
 # ── Bloquear pastas do código-fonte ──
 # Impedir acesso direto a src/, node_modules/, .agent/, .vscode/, dist/
-RewriteRule ^(src|node_modules|\.agent|\.vscode|\.git|dist)(/|$) - [F,L]
+RewriteRule ^(src|node_modules|\.agent|\.vscode|\.git)(/|$) - [F,L]
 
 # ── Bloquear arquivos sensíveis ──
 RewriteRule ^(package\.json|package-lock\.json|tsconfig\.json|tsconfig\.tsbuildinfo|vite\.config\.ts)$ - [F,L]
