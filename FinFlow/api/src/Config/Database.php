@@ -12,10 +12,10 @@ class Database
     public static function getConnection(): PDO
     {
         if (self::$pdo === null) {
-            $host = getenv('DB_HOST') ?: 'localhost';
-            $dbName = getenv('DB_NAME') ?: 'finflow';
-            $user = getenv('DB_USER') ?: 'root';
-            $pass = getenv('DB_PASS') ?: '';
+            $host = defined('DB_HOST') ? DB_HOST : (getenv('DB_HOST') ?: 'localhost');
+            $dbName = defined('DB_NAME') ? DB_NAME : (getenv('DB_NAME') ?: 'finflow');
+            $user = defined('DB_USER') ? DB_USER : (getenv('DB_USER') ?: 'root');
+            $pass = defined('DB_PASS') ? DB_PASS : (getenv('DB_PASS') ?: '');
 
             $dsn = "mysql:host=$host;dbname=$dbName;charset=utf8mb4";
 

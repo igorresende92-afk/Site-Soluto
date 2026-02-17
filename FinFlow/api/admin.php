@@ -9,7 +9,10 @@ use FinFlow\Utils\Response;
 setCorsHeaders();
 
 $auth = getAuthUser();
-if (!$auth['is_admin']) {
+// Check both snake_case and camelCase for better compatibility across token versions
+$isAdmin = !empty($auth['is_admin']) || !empty($auth['isAdmin']);
+
+if (!$isAdmin) {
     Response::error('Acesso negado', 403);
 }
 
@@ -63,7 +66,7 @@ try {
         default:
             Response::error('Ação inválida', 404);
     }
-} catch (Exception $e) {
+} catch (Throwable $e) {
     Response::error($e->getMessage(), 500);
 }
 

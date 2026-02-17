@@ -1,5 +1,8 @@
 <?php
 
+error_reporting(0);
+ini_set('display_errors', 0);
+
 // Basic Autoloader
 spl_autoload_register(function ($class) {
     if (strpos($class, 'FinFlow\\') === 0) {

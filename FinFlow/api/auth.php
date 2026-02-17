@@ -17,7 +17,7 @@ try {
         'me' => handleMe(), // Keep existing handleMe for now or refactor
         default => Response::error('Ação inválida', 404),
     };
-} catch (Exception $e) {
+} catch (Throwable $e) {
     Response::error($e->getMessage(), 500);
 }
 
