@@ -3,7 +3,7 @@
  * Centralized HTTP client for communicating with PHP backend.
  */
 
-const API_BASE = import.meta.env.VITE_API_URL || '/Site-Soluto/FinFlow/api';
+const API_BASE = import.meta.env.VITE_API_URL || 'api';
 
 let authToken: string | null = localStorage.getItem('finflow_token');
 

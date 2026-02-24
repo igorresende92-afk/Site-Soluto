@@ -1,0 +1,11 @@
+# Protege arquivos sensíveis
+<FilesMatch "\.(json|bak)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Permite apenas api.php
+<Files "api.php">
+    Order Allow,Deny
+    Allow from all
+</Files>

@@ -4,7 +4,7 @@ import path from 'path'
 
 
 export default defineConfig(({ command }) => ({
-    base: command === 'serve' ? './' : '/Site-Soluto/FinFlow/',
+    base: './',
     test: {
         globals: true,
         environment: 'jsdom',

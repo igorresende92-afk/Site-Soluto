@@ -1,0 +1,15 @@
+{
+    "name": "Conectados",
+    "short_name": "Conectados",
+    "start_url": "./index.html",
+    "display": "standalone",
+    "background_color": "#FAF8F5",
+    "theme_color": "#71A289",
+    "icons": [
+        {
+            "src": "icon.svg",
+            "sizes": "1024x1024",
+            "type": "image/svg+xml"
+        }
+    ]
+}
